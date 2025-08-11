@@ -4,9 +4,10 @@ import Galaxy3D from '@/components/Galaxy3D'
 import Navigation from '@/components/Navigation'
 import HeroSection from '@/components/HeroSection'
 import PlanetCard from '@/components/PlanetCard'
+import AdminPanel from '@/components/AdminPanel'
 
-// Sample planet data
-const samplePlanets = [
+// Complete Solar System data with all planets and moons
+const solarSystemData = [
   {
     id: 'mercury',
     name: 'Mercury',
@@ -16,7 +17,8 @@ const samplePlanets = [
     orbitRadius: 3,
     orbitSpeed: 0.8,
     description: 'The smallest and innermost planet in our solar system.',
-    funFact: 'A day on Mercury lasts longer than its year!'
+    funFact: 'A day on Mercury lasts longer than its year!',
+    moons: []
   },
   {
     id: 'venus',
@@ -27,7 +29,8 @@ const samplePlanets = [
     orbitRadius: 4.5,
     orbitSpeed: 0.6,
     description: 'The hottest planet in our solar system with thick clouds.',
-    funFact: 'Venus rotates backwards compared to most planets!'
+    funFact: 'Venus rotates backwards compared to most planets!',
+    moons: []
   },
   {
     id: 'earth',
@@ -38,7 +41,18 @@ const samplePlanets = [
     orbitRadius: 6,
     orbitSpeed: 0.4,
     description: 'Our beautiful blue home planet, teeming with life.',
-    funFact: 'Earth is the only known planet with liquid water on its surface!'
+    funFact: 'Earth is the only known planet with liquid water on its surface!',
+    moons: [
+      {
+        id: 'moon',
+        name: 'The Moon',
+        size: 0.15,
+        color: '#C0C0C0',
+        orbitRadius: 0.8,
+        orbitSpeed: 2.0,
+        description: 'Earth\'s only natural satellite.'
+      }
+    ]
   },
   {
     id: 'mars',
@@ -49,7 +63,27 @@ const samplePlanets = [
     orbitRadius: 7.5,
     orbitSpeed: 0.3,
     description: 'The red planet, our next destination for human exploration.',
-    funFact: 'Mars has the largest volcano in the solar system - Olympus Mons!'
+    funFact: 'Mars has the largest volcano in the solar system - Olympus Mons!',
+    moons: [
+      {
+        id: 'phobos',
+        name: 'Phobos',
+        size: 0.05,
+        color: '#8B4513',
+        orbitRadius: 0.6,
+        orbitSpeed: 3.0,
+        description: 'The largest moon of Mars.'
+      },
+      {
+        id: 'deimos',
+        name: 'Deimos',
+        size: 0.03,
+        color: '#8B4513',
+        orbitRadius: 0.9,
+        orbitSpeed: 1.5,
+        description: 'The smaller, outer moon of Mars.'
+      }
+    ]
   },
   {
     id: 'jupiter',
@@ -60,7 +94,45 @@ const samplePlanets = [
     orbitRadius: 10,
     orbitSpeed: 0.2,
     description: 'The largest planet, a gas giant with many moons.',
-    funFact: 'Jupiter has more than 80 known moons!'
+    funFact: 'Jupiter has more than 80 known moons!',
+    moons: [
+      {
+        id: 'io',
+        name: 'Io',
+        size: 0.2,
+        color: '#FFFF99',
+        orbitRadius: 1.5,
+        orbitSpeed: 4.0,
+        description: 'Jupiter\'s volcanic moon.'
+      },
+      {
+        id: 'europa',
+        name: 'Europa',
+        size: 0.18,
+        color: '#87CEEB',
+        orbitRadius: 2.0,
+        orbitSpeed: 3.0,
+        description: 'Jupiter\'s icy moon with subsurface ocean.'
+      },
+      {
+        id: 'ganymede',
+        name: 'Ganymede',
+        size: 0.25,
+        color: '#B8860B',
+        orbitRadius: 2.5,
+        orbitSpeed: 2.5,
+        description: 'The largest moon in our solar system.'
+      },
+      {
+        id: 'callisto',
+        name: 'Callisto',
+        size: 0.22,
+        color: '#2F4F4F',
+        orbitRadius: 3.0,
+        orbitSpeed: 2.0,
+        description: 'Jupiter\'s heavily cratered moon.'
+      }
+    ]
   },
   {
     id: 'saturn',
@@ -71,7 +143,102 @@ const samplePlanets = [
     orbitRadius: 12,
     orbitSpeed: 0.15,
     description: 'Famous for its spectacular ring system.',
-    funFact: 'Saturn is less dense than water - it would float!'
+    funFact: 'Saturn is less dense than water - it would float!',
+    moons: [
+      {
+        id: 'titan',
+        name: 'Titan',
+        size: 0.24,
+        color: '#FFA500',
+        orbitRadius: 1.8,
+        orbitSpeed: 2.8,
+        description: 'Saturn\'s largest moon with thick atmosphere.'
+      },
+      {
+        id: 'enceladus',
+        name: 'Enceladus',
+        size: 0.12,
+        color: '#F0F8FF',
+        orbitRadius: 1.2,
+        orbitSpeed: 3.5,
+        description: 'Saturn\'s icy moon with geysers.'
+      }
+    ]
+  },
+  {
+    id: 'uranus',
+    name: 'Uranus',
+    position: [12, 0, 0] as [number, number, number],
+    size: 0.8,
+    color: '#4FD0E7',
+    orbitRadius: 15,
+    orbitSpeed: 0.1,
+    description: 'An ice giant that rotates on its side.',
+    funFact: 'Uranus has the coldest atmosphere in the solar system!',
+    moons: [
+      {
+        id: 'miranda',
+        name: 'Miranda',
+        size: 0.08,
+        color: '#C0C0C0',
+        orbitRadius: 1.0,
+        orbitSpeed: 4.5,
+        description: 'Uranus\' small, fractured moon.'
+      },
+      {
+        id: 'ariel',
+        name: 'Ariel',
+        size: 0.1,
+        color: '#D3D3D3',
+        orbitRadius: 1.3,
+        orbitSpeed: 3.8,
+        description: 'One of Uranus\' five major moons.'
+      }
+    ]
+  },
+  {
+    id: 'neptune',
+    name: 'Neptune',
+    position: [14, 0, 0] as [number, number, number],
+    size: 0.7,
+    color: '#4B70DD',
+    orbitRadius: 18,
+    orbitSpeed: 0.08,
+    description: 'The windiest planet with supersonic storms.',
+    funFact: 'Neptune has winds that reach up to 2,100 km/h!',
+    moons: [
+      {
+        id: 'triton',
+        name: 'Triton',
+        size: 0.16,
+        color: '#F5DEB3',
+        orbitRadius: 1.1,
+        orbitSpeed: 3.2,
+        description: 'Neptune\'s largest moon, orbits backwards.'
+      }
+    ]
+  },
+  {
+    id: 'pluto',
+    name: 'Pluto',
+    position: [16, 0, 0] as [number, number, number],
+    size: 0.2,
+    color: '#DEB887',
+    orbitRadius: 22,
+    orbitSpeed: 0.05,
+    description: 'The dwarf planet at the edge of our solar system.',
+    funFact: 'Pluto was reclassified as a dwarf planet in 2006!',
+    moons: [
+      {
+        id: 'charon',
+        name: 'Charon',
+        size: 0.1,
+        color: '#A0522D',
+        orbitRadius: 0.7,
+        orbitSpeed: 2.5,
+        description: 'Pluto\'s largest moon, nearly half its size.'
+      }
+    ]
   }
 ]
 
@@ -79,6 +246,8 @@ export default function GalaxyHub() {
   const [currentPage, setCurrentPage] = useState('home')
   const [selectedPlanet, setSelectedPlanet] = useState<string | null>(null)
   const [showHero, setShowHero] = useState(true)
+  const [showAdmin, setShowAdmin] = useState(false)
+  const [planets, setPlanets] = useState(solarSystemData)
 
   const handlePlanetClick = (planetId: string) => {
     setSelectedPlanet(planetId)
@@ -90,14 +259,14 @@ export default function GalaxyHub() {
   }
 
   const selectedPlanetData = selectedPlanet 
-    ? samplePlanets.find(p => p.id === selectedPlanet)
+    ? planets.find(p => p.id === selectedPlanet)
     : null
 
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* 3D Galaxy Background */}
       <Galaxy3D 
-        planets={samplePlanets} 
+        planets={planets} 
         onPlanetClick={handlePlanetClick}
       />
       
@@ -105,6 +274,7 @@ export default function GalaxyHub() {
       <Navigation 
         currentPage={currentPage} 
         onPageChange={setCurrentPage}
+        onAdminClick={() => setShowAdmin(true)}
       />
       
       {/* Hero Section */}
@@ -151,7 +321,7 @@ export default function GalaxyHub() {
                     Use your mouse to navigate around the galaxy and discover new worlds.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {samplePlanets.map((planet) => (
+                    {planets.map((planet) => (
                       <div
                         key={planet.id}
                         className="glass-panel p-4 rounded-lg cursor-pointer planet-hover"
@@ -196,6 +366,17 @@ export default function GalaxyHub() {
               )}
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Admin Panel */}
+      <AnimatePresence>
+        {showAdmin && (
+          <AdminPanel
+            planets={planets}
+            onPlanetsUpdate={setPlanets}
+            onClose={() => setShowAdmin(false)}
+          />
         )}
       </AnimatePresence>
     </div>

@@ -6,16 +6,18 @@ import { Menu, X, Home, Telescope, Info, Mail } from 'lucide-react'
 interface NavigationProps {
   currentPage: string
   onPageChange: (page: string) => void
+  onAdminClick?: () => void
 }
 
-export default function Navigation({ currentPage, onPageChange }: NavigationProps) {
+export default function Navigation({ currentPage, onPageChange, onAdminClick }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false)
   
   const menuItems = [
-    { id: 'home', label: 'Galaxy Hub', icon: Home },
+    { id: 'home', label: 'Home', icon: Home },
     { id: 'explore', label: 'Explore', icon: Telescope },
-    { id: 'about', label: 'About Galaxy', icon: Info },
+    { id: 'about', label: 'About', icon: Info },
     { id: 'contact', label: 'Contact', icon: Mail },
+    { id: 'admin', label: 'Admin', icon: Info, action: onAdminClick },
   ]
 
   return (
@@ -49,7 +51,7 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
                       ? 'bg-primary text-primary-foreground shadow-lg' 
                       : 'hover:bg-white/10'
                   }`}
-                  onClick={() => onPageChange(item.id)}
+                  onClick={() => (item as any).action ? (item as any).action() : onPageChange(item.id)}
                 >
                   <Icon className="h-4 w-4 mr-2" />
                   {item.label}
@@ -79,29 +81,33 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
               className="absolute right-0 top-0 h-full w-80 glass-panel p-6"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mt-16 space-y-4">
-                {menuItems.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <Button
-                      key={item.id}
-                      variant={currentPage === item.id ? "default" : "ghost"}
-                      className={`w-full justify-start nav-item ${
-                        currentPage === item.id 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'hover:bg-white/10'
-                      }`}
-                      onClick={() => {
-                        onPageChange(item.id)
-                        setIsOpen(false)
-                      }}
-                    >
-                      <Icon className="h-5 w-5 mr-3" />
-                      {item.label}
-                    </Button>
-                  )
-                })}
-              </div>
+                <div className="mt-16 space-y-4">
+                  {menuItems.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <Button
+                        key={item.id}
+                        variant={currentPage === item.id ? "default" : "ghost"}
+                        className={`w-full justify-start nav-item ${
+                          currentPage === item.id 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'hover:bg-white/10'
+                        }`}
+                        onClick={() => {
+                          if ((item as any).action) {
+                            (item as any).action()
+                          } else {
+                            onPageChange(item.id)
+                          }
+                          setIsOpen(false)
+                        }}
+                      >
+                        <Icon className="h-5 w-5 mr-3" />
+                        {item.label}
+                      </Button>
+                    )
+                  })}
+                </div>
             </motion.nav>
           </motion.div>
         )}

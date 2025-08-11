@@ -3,6 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Orbit, Zap } from 'lucide-react'
 
+interface Moon {
+  id: string
+  name: string
+  size: number
+  color: string
+  orbitRadius: number
+  orbitSpeed: number
+  description: string
+}
+
 interface Planet {
   id: string
   name: string
@@ -11,6 +21,7 @@ interface Planet {
   funFact: string
   image?: string
   color: string
+  moons: Moon[]
 }
 
 interface PlanetCardProps {
@@ -65,13 +76,51 @@ export default function PlanetCard({ planet, onBack }: PlanetCardProps) {
             <div className="glass-panel p-4 rounded-lg">
               <div className="flex items-center mb-2">
                 <Zap className="h-5 w-5 text-accent mr-2" />
-                <span className="font-semibold">Fun Fact</span>
+                <span className="font-semibold">Moons</span>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {planet.funFact}
+              <p className="text-2xl font-bold text-accent">
+                {planet.moons.length}
               </p>
             </div>
           </div>
+          
+          <div className="glass-panel p-4 rounded-lg">
+            <div className="flex items-center mb-3">
+              <Zap className="h-5 w-5 text-accent mr-2" />
+              <span className="font-semibold">Fun Fact</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {planet.funFact}
+            </p>
+          </div>
+          
+          {planet.moons.length > 0 && (
+            <div className="glass-panel p-4 rounded-lg">
+              <h3 className="font-semibold mb-3 flex items-center">
+                <Orbit className="h-5 w-5 text-primary mr-2" />
+                Moons of {planet.name}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {planet.moons.map((moon) => (
+                  <div key={moon.id} className="glass-panel p-3 rounded-lg">
+                    <div className="flex items-center mb-2">
+                      <div
+                        className="w-8 h-8 rounded-full mr-3"
+                        style={{
+                          background: `radial-gradient(circle at 30% 30%, ${moon.color}, #1a1a2e)`,
+                          boxShadow: `0 0 10px ${moon.color}40`
+                        }}
+                      />
+                      <span className="font-medium text-sm">{moon.name}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {moon.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           <div className="flex justify-center">
             <Button 
