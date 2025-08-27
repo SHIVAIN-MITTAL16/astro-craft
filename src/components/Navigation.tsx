@@ -42,6 +42,19 @@ export default function Navigation({ currentPage, onPageChange, onAdminClick }: 
           <div className="flex space-x-2">
             {menuItems.map((item) => {
               const Icon = item.icon
+              if (item.id === 'admin') {
+                return (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    className="nav-item hover:bg-white/10"
+                    onClick={() => onAdminClick?.()}
+                  >
+                    <Icon className="h-4 w-4 mr-2" />
+                    {item.label}
+                  </Button>
+                )
+              }
               return (
                 <Button
                   key={item.id}
@@ -51,10 +64,18 @@ export default function Navigation({ currentPage, onPageChange, onAdminClick }: 
                       ? 'bg-primary text-primary-foreground shadow-lg' 
                       : 'hover:bg-white/10'
                   }`}
-                  onClick={() => (item as any).action ? (item as any).action() : onPageChange(item.id)}
+                  asChild
                 >
-                  <Icon className="h-4 w-4 mr-2" />
-                  {item.label}
+                  <a
+                    href={`#${item.id}`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      onPageChange(item.id)
+                    }}
+                  >
+                    <Icon className="h-4 w-4 mr-2" />
+                    {item.label}
+                  </a>
                 </Button>
               )
             })}
@@ -84,6 +105,22 @@ export default function Navigation({ currentPage, onPageChange, onAdminClick }: 
                 <div className="mt-16 space-y-4">
                   {menuItems.map((item) => {
                     const Icon = item.icon
+                    if (item.id === 'admin') {
+                      return (
+                        <Button
+                          key={item.id}
+                          variant="ghost"
+                          className="w-full justify-start nav-item hover:bg-white/10"
+                          onClick={() => {
+                            onAdminClick?.()
+                            setIsOpen(false)
+                          }}
+                        >
+                          <Icon className="h-5 w-5 mr-3" />
+                          {item.label}
+                        </Button>
+                      )
+                    }
                     return (
                       <Button
                         key={item.id}
@@ -93,17 +130,19 @@ export default function Navigation({ currentPage, onPageChange, onAdminClick }: 
                             ? 'bg-primary text-primary-foreground' 
                             : 'hover:bg-white/10'
                         }`}
-                        onClick={() => {
-                          if ((item as any).action) {
-                            (item as any).action()
-                          } else {
-                            onPageChange(item.id)
-                          }
-                          setIsOpen(false)
-                        }}
+                        asChild
                       >
-                        <Icon className="h-5 w-5 mr-3" />
-                        {item.label}
+                        <a
+                          href={`#${item.id}`}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            onPageChange(item.id)
+                            setIsOpen(false)
+                          }}
+                        >
+                          <Icon className="h-5 w-5 mr-3" />
+                          {item.label}
+                        </a>
                       </Button>
                     )
                   })}
